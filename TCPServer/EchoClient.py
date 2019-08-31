@@ -3,7 +3,10 @@ import sys
 
 if __name__ == "__main__":
 	if len(sys.argv) < 4:
-		print("{0} <Bind IP> <Server IP> <Message>".format(sys.args))
+		print("{0} <Bind IP> <Server IP> <Message>".format(sys.argv))
+		bindIP = "127.0.0.1"
+		serverIP = "127.0.0.1"
+		message = sys.argv[1]
 		
 	else :
 		bindIP = sys.argv[1]
