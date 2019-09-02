@@ -68,7 +68,7 @@ class FileReceiveHandler(socketserver.BaseRequestHandler):
             fileSize = reqMsg.Body.FILESIZE
             fileName = reqMsg.Body.FILENAME
             recvFileSize = 0 
-            with open(upload_dir + "\\" + fileName, 'wb') as file: # 업로드 받을 파일을 생성한다
+            with open(upload_dir + os.sep + "temp.py", 'wb') as file: # 업로드 받을 파일을 생성한다	######################################################## https://freeprog.tistory.com/319 참고 고치기
                 dataMsgId = -1
                 prevSeq = 0
                 
