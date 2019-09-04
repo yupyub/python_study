@@ -68,7 +68,8 @@ class FileReceiveHandler(socketserver.BaseRequestHandler):
             fileSize = reqMsg.Body.FILESIZE
             fileName = reqMsg.Body.FILENAME
             recvFileSize = 0 
-            with open(upload_dir + os.sep + "temp.py", 'wb') as file: # 업로드 받을 파일을 생성한다	######################################################## https://freeprog.tistory.com/319 참고 고치기
+        
+            with open(upload_dir + os.sep + "temp.py", 'wb') as file: # 업로드 받을 파일을 생성한다 +  window & linux 호환 가능하도록 변경
                 dataMsgId = -1
                 prevSeq = 0
                 
@@ -128,7 +129,11 @@ class FileReceiveHandler(socketserver.BaseRequestHandler):
 
             print("파일 전송을 마쳤습니다.")                
             client.close()
-
+            print("서버를 종료하겠습니까? yes/no")
+            answer2 = sys.stdin.readline()
+            if answer2.strip() == "yes":        # 프로그램 종료 (sock.close()는 없는 듯 하다)
+                sys.exit(0)
+                
 if __name__ == '__main__':
     if len(sys.argv) < 2:
         print("사용법 : {0} <Directory>".format(sys.argv[0]))
@@ -146,6 +151,7 @@ if __name__ == '__main__':
             
         print("파일 업로드 서버 시작...")
         server.serve_forever()
+        
     except Exception as err:
         print(err)
 

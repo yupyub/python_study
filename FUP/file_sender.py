@@ -20,6 +20,7 @@ if   __name__ == '__main__':
     if len(sys.argv) < 3:
         print("사용법 : {0} <Server IP> <File Path>".
               format(sys.argv[0]))
+        print("File Path shoud be start with /")
         sys.exit(0)
 
     serverIp   = sys.argv[1]
@@ -39,7 +40,7 @@ if   __name__ == '__main__':
         filesize = os.path.getsize(filepath)
         reqMsg.Body = BodyRequest(None)
         reqMsg.Body.FILESIZE = filesize
-        reqMsg.Body.FILENAME = filepath[filepath.rindex('//')+1:]	#############################################################
+        reqMsg.Body.FILENAME = filepath[filepath.rindex('/')+1:]	##### File path should be start with "/"
     
         msgId += 1
         reqMsg.Header = Header(None)
