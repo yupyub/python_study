@@ -5,8 +5,8 @@ cursor = conn.cursor()
 
 cursor.execute("SELECT NAME, PHONE, EMAIL FROM PHONEBOOK") # "SELECT * FROM PHONEBOOK" 
 
-row1 = cursor.fetchone()
-print(row1)
+#row1 = cursor.fetchone()
+#print(row1)
 
 rows = cursor.fetchall()
 for row in rows:
