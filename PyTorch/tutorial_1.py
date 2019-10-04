@@ -1,10 +1,18 @@
 from __future__ import print_function
 import torch
-
-#x = torch.empty(5,3) # un initialized
-#x = torch.rand(5,3) # random 
-#x = torch.zeros(5,3,dtype=torch.long) # zeros & type long
-
+'''
+환경 설정 : PyTorch설치, torchvision 설치
+1. Pytorch 설치 : pytorch 공식 홈페이지 (CUDA 반드시 확인)
+  ex) linux & CUDA 사용 X : pip3 install torch==1.2.0+cpu torchvision==0.4.0+cpu -f https://download.pytorch.org/whl/torch_stable.html
+  
+2. torchvision 설치 
+  ex) pip 이용 : pip install torchvision
+'''
+"""
+x = torch.empty(5,3) # un initialized
+x = torch.rand(5,3) # random 
+x = torch.zeros(5,3,dtype=torch.long) # zeros & type long
+"""
 '''
 x = torch.tensor([5.5,3])
 x = x.new_ones(5,3,dtype=torch.double) # new_* 메소드는 크기를 받는다
