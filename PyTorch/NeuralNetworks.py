@@ -1,20 +1,19 @@
-"""
-http://swlock.blogspot.com/2018/07/pytorch-autograd-tutorial.html
-< NN 학습 과정 >
-1. 학습 가능한 매개변수(또는 가중치(weight))를 갖는 신경망을 정의
-2. 데이터셋(dataset) 입력을 반복
-3. 입력을 신경망에서 전파(process)
-4. 손실(loss; 출력이 정답으로부터 얼마나 떨어져있는지)을 계산
-5. 변화도(gradient)를 신경망의 매개변수들에 역으로 전파
-6. 신경망의 가중치를 갱신 
-    <가중치(wiehgt) = 가중치(weight) - 학습율(learning rate) * 변화도(gradient)>
-"""
+############################################################################
+# < NN 학습 과정 >
+# 1. 학습 가능한 매개변수(또는 가중치(weight))를 갖는 신경망을 정의
+# 2. 데이터셋(dataset) 입력을 반복
+# 3. 입력을 신경망에서 전파(process)
+# 4. 손실(loss; 출력이 정답으로부터 얼마나 떨어져있는지)을 계산
+# 5. 변화도(gradient)를 신경망의 매개변수들에 역으로 전파
+# 6. 신경망의 가중치를 갱신 
+#    <가중치(wiehgt) = 가중치(weight) - 학습율(learning rate) * 변화도(gradient)>
+#############################################################################
 import torch
-"""
+#############################################################################
 # torch.nn 은 미니-배치(mini-batch)만 지원함. torch.nn 패키지 전체는 하나의 샘플이 아닌, 샘플들의 미니-배치만을 입력으로 받는다.
 # 예를 들어, nnConv2D 는 nSamples x nChannels x Height x Width 의 4차원 Tensor를 입력으로 한다.
 # 만약 하나의 샘플만 있다면, input.unsqueeze(0) 을 사용해서 가짜 차원을 추가
-"""
+##############################################################################
 import torch.nn as nn 
 import torch.nn.functional as F
 
@@ -53,22 +52,60 @@ class Net(nn.Module):
 
 net = Net()
 # print(net)
-'''
+"""
 params = list(net.parameters())
 print(len(params))
 print(params[0].size()) # conv1's weight
-'''
-
-input = torch.randn(1,1,32,32)
+"""
+input = torch.randn(1,1,32,32) # input size is 32x32 (one example,one feature => I guess)
 out = net(input)
-#net.zero_grad()
-#out.backward(torch.randn(1,10))
+net.zero_grad() # 모든 매개변수의 변화도 버퍼(gradient buffer)를 0으로 설정
+out.backward(torch.randn(1,10)) # 무작위 값으로 역전파 (예시를 위해)
 output = net(input)
 target = torch.randn(10) # dummy target, for example
 target = target.view(1,-1) # make it the dame shape as output
 criterion = nn.MSELoss();
 loss = criterion(output,target)
 print(loss)
+'''
+# input의 경로 추척
 print(loss.grad_fn)  # MSELoss
 print(loss.grad_fn.next_functions[0][0])  # Linear
 print(loss.grad_fn.next_functions[0][0].next_functions[0][0])  # ReLU
+#####################################################################
+# input -> conv2d -> relu -> maxpool2d -> conv2d -> relu -> maxpool2d
+#       -> view -> linear -> relu -> linear -> relu -> linear
+#       -> MSELoss -> loss
+#####################################################################
+'''
+net.zero_grad()     # zeroes the gradient buffers of all parameters
+print('conv1.bias.grad before backward')
+print(net.conv1.bias.grad)
+loss.backward()
+print('conv1.bias.grad after backward')
+print(net.conv1.bias.grad)
+
+"""
+# 가중치(wiehgt) = 가중치(weight) - 학습율(learning rate) * 변화도(gradient)
+learning_rate = 0.01
+for f in net.parameters():
+    f.data.sub_(f.grad.data * learning_rate)
+"""
+##########################################################################
+# SGD, Nesterov-SGD, Adam, RMSProp등과 같은 다양한 갱신 규칙을 사용하고 싶은 경우 
+# torch.optim 패키지를 이용
+##########################################################################
+import torch.optim as optim
+# Optimizer를 생성합니다.
+optimizer = optim.SGD(net.parameters(), lr=0.01)
+# 학습 과정(training loop)에서는 다음과 같습니다:
+optimizer.zero_grad()   # zero the gradient buffers
+output = net(input)
+loss = criterion(output, target)
+loss.backward()
+optimizer.step()    # Does the update
+##########################################################################
+# backward를 하기 전, optimizer.zero_grad() 를 사용하여 수동으로 
+# 변화도 버퍼를 0으로 설정해야 함 이는 역전파(Backprop) 섹션에서 설명한 것처럼 
+# 변화도가 누적되기 때문.
+##########################################################################
