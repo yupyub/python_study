@@ -1,5 +1,4 @@
-##########################################################################################
-# 2. 합성곱 신경망(Convolution Neural Network)을 정의한다.
+# CIFAR10에 적용하기 위한 임의의 NN
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -24,13 +23,6 @@ class Net(nn.Module):
         return x
 
 net = Net()
-# 참고 : https://tutorials.pytorch.kr/beginner/saving_loading_models.html#checkpoint
-# 전체 모델 저장하기
-torch.save(net, "./DATA/CIFAR10_Model.pt")
 
-"""
-# 전체 모델 불러오기
-# 모델 클래스는 어딘가에 반드시 선언되어 있어야 합니다
-model = torch.load(PATH)
-model.eval()
-"""
+# 전체 모델 저장하기
+torch.save(net, "./DATA/NN_Model_1.pt")
