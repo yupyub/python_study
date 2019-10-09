@@ -34,22 +34,3 @@ torch.save(net, "./DATA/CIFAR10_Model.pt")
 model = torch.load(PATH)
 model.eval()
 """
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

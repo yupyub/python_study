@@ -99,7 +99,7 @@ if os.path.isfile("./DATA/CIFAR10_checkpoint.tar") :
 # checkpoint가 없는 경우만 학습을 시킨다
 else :
 	net.train()
-	for epoch in range(4): # 데이터셋을 수차례 반복한다.
+	for epoch in range(3): # 데이터셋을 수차례 반복한다.
 		running_loss = 0.0
 		for i, data in enumerate(trainloader,0):
 			inputs,labels = data
@@ -166,4 +166,3 @@ with torch.no_grad():
 
 for i in range(10):
     print('Accuracy of %5s : %2d %%' % (classes[i], 100 * class_correct[i] / class_total[i]))
-
