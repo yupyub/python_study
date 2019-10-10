@@ -6,3 +6,6 @@ https://sacko.tistory.com/17?category=632408
 
 3. CIFAR10 정복 시리즈
 https://dnddnjs.github.io/cifar10/2018/10/07/start_cifar10/
+
+4. 딥러닝을 위한 콘볼루션 계산 가이드
+https://tensorflow.blog/a-guide-to-convolution-arithmetic-for-deep-learning/
