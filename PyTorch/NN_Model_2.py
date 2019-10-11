@@ -17,28 +17,30 @@ import torch.nn.functional as F
 class Net(nn.Module):
     def __init__(self):
         super(Net, self).__init__() 
-        # OutSize = (32 - 5 + 0)/1 + 1 = 28 
-        # Output = 28*28 size img with 6-Filters
-        self.conv1 = nn.Conv2d(3, 6, 5) 
-        # Output = 14*14 size img with 6-Filters
+        # OutSize = (32 - 5 + 2)/1 + 1 = 30 
+        # Output = 30*30 size img with 8-Filters
+        self.conv1 = nn.Conv2d(3, 8, 5, 1) 
+        # Output = 15*15 size img with 8-Filters
         self.pool = nn.MaxPool2d(2, 2)
-        # OutSize = (14 - 5 + 0)/1 + 1 = 10
-        # Output = 10*10 size img with 16-Filters
-        self.conv2 = nn.Conv2d(6, 16, 5)
-        self.fc1 = nn.Linear(16 * 5 * 5, 120)
-        self.fc2 = nn.Linear(120, 84)
-        self.fc3 = nn.Linear(84, 10)
+        # OutSize = (15 - 5 + 0)/1 + 1 = 10
+        # Output = 10*10 size img with 24-Filters
+        self.conv2 = nn.Conv2d(8, 24, 5)
+        self.fc1 = nn.Linear(24 * 10 * 10, 150)
+        self.fc2 = nn.Linear(150, 90)
+        self.fc3 = nn.Linear(90, 30)
+        self.fc4 = nn.Linear(30, 10)
 
     def forward(self, x):
         x = self.pool(F.relu(self.conv1(x)))
-        x = self.pool(F.relu(self.conv2(x)))
-        x = x.view(-1, 16 * 5 * 5)
+        x = F.relu(self.conv2(x))
+        x = x.view(-1, 24 * 10 * 10)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
-        x = self.fc3(x)
+        x = F.relu(self.fc3(x))
+        x = self.fc4(x)
         return x
 
 net = Net()
 
 # 전체 모델 저장하기
-torch.save(net, "./DATA/NN_Model_1.pt")
+torch.save(net, "./DATA/NN_Model_2.pt")

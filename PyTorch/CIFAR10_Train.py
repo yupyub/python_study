@@ -43,8 +43,8 @@ images, labels = dataiter.next()
 # 추론 / 학습 재개를 위해 모델 불러오기
 import sys
 sys.path.insert(0, './DATA')
-import NN_Model_1         # ___________________SET MODEL NAME________________________ #
-MODELNAME = "NN_Model_1"  # ___________________SET MODEL NAME________________________ #
+import NN_Model_2         # ___________________SET MODEL NAME________________________ #
+MODELNAME = "NN_Model_2"  # ___________________SET MODEL NAME________________________ #
 net = torch.load("./DATA/%s.pt" % (MODELNAME))
 
 ##########################################################################################
